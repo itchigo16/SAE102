@@ -19,6 +19,7 @@ public class RelationBinaire {
     public RelationBinaire(int nb){
 
     }
+    }
 
     //______________________________________________
 
@@ -121,7 +122,16 @@ public class RelationBinaire {
      résultat : le produit matriciel de m1 et m2
      */
     public static boolean[][] produit(boolean[][] m1, boolean[][] m2){
-
+        boolean[][] mat = new boolean[m1.length][m1.length];
+        for (int i = 0; i < m1.length; i++) {
+            for (int j = 0; j < m1[0].length; j++) {
+                for (int k = 0; k < m2.length; k++) {
+                    // soit laisse TRUE soit verifie que a l'indice de m1 et a l'indice de m2 il y a TRUE
+                    mat[i][j] = mat[i][j] || (m1[i][k] && m2[k][j]);
+                }
+            }
+        }
+        return mat;
     }
 
     //______________________________________________
