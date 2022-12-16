@@ -132,12 +132,16 @@ public class RelationBinaire {
     public RelationBinaire(EE[] tab) {
         n = tab.length;
         m = 0;
+        matAdj = new boolean[n][n];
+        tabSucc = new EE[n];
+
         for (int i = 0; i < tab.length; i++) {
             m += tab[i].getCardinal();
         }
 
-        tabSucc = Arrays.copyOf(tab, tab.length);
-        matAdj = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            tabSucc[i] = new EE(tab[i]);
+        }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -226,37 +230,40 @@ public class RelationBinaire {
 
         boolean[][] m3 = new boolean[length][length];
 
-        switch (numConnecteur) {
-            case (1): // OU
-                for (int i = 0; i < length; i++) {
-                    for (int j = 0; j < length; j++) {
-                        m3[i][j] = m1[i][j] || m2[i][j];
-                    }
+        if (numConnecteur == 1) { // OU
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    m3[i][j] = m1[i][j] || m2[i][j];
                 }
-            case (2): // ET
-                for (int i = 0; i < length; i++) {
-                    for (int j = 0; j < length; j++) {
-                        m3[i][j] = m1[i][j] && m2[i][j];
-                    }
+            }
+        }
+        if (numConnecteur == 2) { // ET
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    m3[i][j] = m1[i][j] && m2[i][j];
                 }
-            case (3): // NON
-                for (int i = 0; i < length; i++) {
-                    for (int j = 0; j < length; j++) {
-                        m3[i][j] = !m1[i][j];
-                    }
+            }
+        }
+        if (numConnecteur == 3) { // NON
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    m3[i][j] = !m1[i][j];
                 }
-            case (4): // IMPLIQUE
-                for (int i = 0; i < length; i++) {
-                    for (int j = 0; j < length; j++) {
-                        m3[i][j] = !m1[i][j] || (m1[i][j] && m2[i][j]);
-                    }
+            }
+        }
+        if (numConnecteur == 4) { // IMPLIQUE
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    m3[i][j] = !m1[i][j] || (m1[i][j] && m2[i][j]);
                 }
-            case (5): // EQUIVALENT
-                for (int i = 0; i < length; i++) {
-                    for (int j = 0; j < length; j++) {
-                        m3[i][j] = m1[i][j] == m2[i][j];
-                    }
+            }
+        }
+        if (numConnecteur == 5) { // EQUIVALENT
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    m3[i][j] = m1[i][j] == m2[i][j];
                 }
+            }
         }
 
         return m3;
@@ -317,23 +324,11 @@ public class RelationBinaire {
      * résultat : vrai ssi this est vide
      */
     public boolean estVide() {
-        for (int i = 0; i < tabSucc.length; i++) {
-            if (!tabSucc[i].estVide()) {
-                return false;
-            }
+        for (int i = 0; i < n; i++) {
+            if (!tabSucc[i].estVide()) return false;
         }
 
         return true;
-
-        /*
-        for (int i = 0; i < matAdj.length; i++) {
-            for (int j = 0; j < matAdj[i].length; j++) {
-                if (matAdj[i][j] == true){
-                    return false;
-                }
-            }
-        }
-         */
     }
 
     //______________________________________________
@@ -345,10 +340,8 @@ public class RelationBinaire {
      */
     public boolean estPleine() {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < tabSucc.length; j++) {
-                if (!tabSucc[j].contient(i)) {
-                    return false;
-                }
+            for (int j = 0; j < n; j++) {
+                if (!tabSucc[i].contient(j)) return false;
             }
         }
 
@@ -372,13 +365,7 @@ public class RelationBinaire {
      * résultat : vrai ssi (x,y) appartient à this
      */
     public boolean appartient(int x, int y) {
-        if (tabSucc[x].contient(y) || tabSucc[y].contient(x)) return true;
-
-        return false;
-
-        /*
-        return matAjd[x][y];
-         */
+        return tabSucc[x].contient(y);
     }
 
     //______________________________________________
@@ -488,13 +475,14 @@ public class RelationBinaire {
      * résultat : la relation complémentaire de this
      */
     public RelationBinaire complementaire() {
-        EE[] tabSuccComplementaire = tabSucc;
+        EE[] tabSuccComplementaire = new EE[n];
+        for (int i = 0; i < n; i++) {
+            tabSuccComplementaire[i] = new EE(n);
+        }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (tabSuccComplementaire[i].contient(j)){
-                    tabSuccComplementaire[i].retraitElt(j);
-                } else {
+                if (!tabSucc[i].contient(j)){
                     tabSuccComplementaire[i].ajoutElt(j);
                 }
             }
