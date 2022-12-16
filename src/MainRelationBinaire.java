@@ -22,15 +22,51 @@ public class MainRelationBinaire {
 
         int[][] tabIntTest =
                 (new int[][]{
-                        {1, 0, 1},
+                        {1, 0, 0},
                         {0, 1, 0},
                         {1, 0, 1}
                 });
 
+        int[][] tabIntTest2 =
+                (new int[][]{
+                        {0, 1, 1},
+                        {0, 0, 0},
+                        {0, 0, 1}
+                });
+
         RelationBinaire relationTest = new RelationBinaire(tabIntTest);
+        relationTest.toString();
 
-        RelationBinaire RelationAvecBoucles = new RelationBinaire(relationTest);
+        RelationBinaire relationTest2 = new RelationBinaire(tabIntTest2);
+        relationTest2.toString();
 
+
+        System.out.println("AVEC BOUCLES");
+        RelationBinaire relationAvecBoucles = relationTest2.avecBoucles();
+        relationAvecBoucles.toString();
+
+        System.out.println("SANS BOUCLES");
+        RelationBinaire relationSansBoucles = relationTest.sansBoucles();
+        relationSansBoucles.toString();
+
+        System.out.println("UNION");
+        RelationBinaire relationUnion = relationTest.union(relationTest2);
+        relationUnion.toString();
+
+        relationTest.toString();
+        relationTest2.toString();
+
+        System.out.println("INTERSECT");
+        RelationBinaire relationIntersect = relationTest.intersection(relationTest2);
+        relationIntersect.toString();
+
+        System.out.println("COMPLEMENTAIRE");
+        RelationBinaire relationComplementaire = relationTest.complementaire();
+        relationComplementaire.toString();
+
+        System.out.println("DIFFERENCE");
+        RelationBinaire relationDifference = relationTest.difference(relationTest2);
+        relationDifference.toString();
     }
 
 
