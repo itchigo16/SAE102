@@ -1,3 +1,4 @@
+import javax.xml.stream.FactoryConfigurationError;
 import java.util.*;
 import java.lang.*;
 
@@ -90,7 +91,7 @@ public class RelationBinaire {
      * action : construit une relation binaire dont la matrice d'adjacence
      * est une copie de mat
      */
-    public RelationBinaire(int[][] mat) {
+    public RelationBinaire(boolean[][] mat) {
         n = mat.length;
         m = 0;
         matAdj = new boolean[n][n];
@@ -101,21 +102,11 @@ public class RelationBinaire {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (mat[i][j] == 1) {
+                matAdj[i][j] = mat[i][j];
+                if (mat[i][j]) {
                     m++;
+                    tabSucc[i].ajoutElt(j);
                 }
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                matAdj[i][j] = mat[i][j] != 0;
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (matAdj[i][j]) tabSucc[i].ajoutElt(j);
             }
         }
     }
@@ -568,9 +559,11 @@ public class RelationBinaire {
             if (ligne.contient(x)) index++;
         }
         EE pred = new EE(index);
+
         for (int i = 0; i < tabSucc.length; i++) {
-            if (tabSucc[i].contient(x)) pred.ajoutElt(i);
+            if (appartient(i, x)) pred.ajoutElt(i);
         }
+
         return pred;
     }
 
@@ -585,7 +578,15 @@ public class RelationBinaire {
      * résultat : vrai ssi this est réflexive
      */
     public boolean estReflexive() {
-        return this.estEgale(this.avecBoucles()); // Moyen ils aiment pas ça
+        for (int i = 0; i < tabSucc.length; i++) {
+            if (!tabSucc[i].contient(i)) return false;
+        }
+
+        return true;
+    }
+
+    public boolean estReflexiveBis() {
+        return this.estEgale(this.avecBoucles());
     }
 
     //______________________________________________
@@ -596,6 +597,14 @@ public class RelationBinaire {
      * résultat : vrai ssi this est antiréflexive
      */
     public boolean estAntireflexive() {
+        for (int i = 0; i < tabSucc.length; i++) {
+            if (tabSucc[i].contient(i)) return false;
+        }
+
+        return true;
+    }
+
+    public boolean estAntireflexiveBis() {
         return this.estEgale(this.sansBoucles());
     }
 
@@ -616,6 +625,10 @@ public class RelationBinaire {
         return true;
     }
 
+    public boolean estSymetriqueBis() {
+        return matAdj == transposee(matAdj);
+    }
+
     //______________________________________________
 
 
@@ -631,6 +644,23 @@ public class RelationBinaire {
             }
         }
         return true;
+    }
+
+    public boolean[][] diagonale (boolean[][] mat){
+        boolean[][] diagonale = new boolean[mat.length][mat.length];
+
+        for (int i = 0; i < mat.length; i++) {
+            diagonale[i][i] = mat[i][i];
+        }
+
+        return diagonale;
+    }
+
+    public boolean estAntisymetriqueBis() {
+        RelationBinaire relationTransposee = new RelationBinaire(transposee(matAdj));
+        RelationBinaire relationInter = intersection(relationTransposee);
+
+        return relationInter.estIncluse(new RelationBinaire(this.diagonale(matAdj)));
     }
 
     //______________________________________________
@@ -679,7 +709,7 @@ public class RelationBinaire {
 
     /**
      * pré-requis : aucun
-     * résultat : la relation binaire assiciée au diagramme de Hasse de this
+     * résultat : la relation binaire associée au diagramme de Hasse de this
      */
     public RelationBinaire hasse() {
         RelationBinaire r = new RelationBinaire(this).sansBoucles();
@@ -705,7 +735,7 @@ public class RelationBinaire {
      */
     public RelationBinaire ferTrans() {
         RelationBinaire r = new RelationBinaire(this);
-        while(!r.estTransitive()) {
+        while (!r.estTransitive()) {
             for (int i = 0; i < r.tabSucc.length; i++) {
                 EE iSuc = r.succ(i);
                 for (int j = 0; j < r.tabSucc.length; j++) {
@@ -733,8 +763,8 @@ public class RelationBinaire {
         System.out.println(this);
         if (estReflexive()) System.out.println("Réflexive");
         if (estAntireflexive()) System.out.println("Antiréflexive");
-        if (estSymetrique()) System.out.println("Symétrique");
-        if (estAntisymetrique()) System.out.println("Antisymétrique");
+        if (estSymetriqueBis()) System.out.println("Symétrique");
+        if (estAntisymetriqueBis()) System.out.println("Antisymétrique");
         if (estTransitive()) System.out.println("Transitive");
         if (estRelOrdre()) System.out.println("Relation d'ordre");
         System.out.println("Diagramme de Hasse :");
@@ -745,5 +775,15 @@ public class RelationBinaire {
 
     //______________________________________________
 
+    public static void main(String[] args) {
+
+        int nb;
+        double p;
+        do {
+            Ut.afficher("\nDonner le cardinal de E (>0) : ");
+            nb = Ut.saisirEntier();
+        }
+        while (nb <= 0);
+    }
 
 } // fin RelationBinaire
