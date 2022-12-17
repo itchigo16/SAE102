@@ -552,7 +552,7 @@ public class RelationBinaire {
      * (c'est-à-dire dans une autre zône mémoire) de l'attribut this.tabSucc
      */
     public EE succ(int x) {
-        return tabSucc[0];
+        return new EE(tabSucc[x]);
     }
 
     //______________________________________________
@@ -563,7 +563,15 @@ public class RelationBinaire {
      * résultat : l'ensemble des prédécesseurs de x dans this
      */
     public EE pred(int x) {
-        return tabSucc[0];
+        int index = 0;
+        for (EE ligne : tabSucc) {
+            if (ligne.contient(x)) index++;
+        }
+        EE pred = new EE(index);
+        for (int i = 0; i < tabSucc.length; i++) {
+            if (tabSucc[i].contient(x)) pred.ajoutElt(i);
+        }
+        return pred;
     }
 
     //______________________________________________
@@ -577,7 +585,7 @@ public class RelationBinaire {
      * résultat : vrai ssi this est réflexive
      */
     public boolean estReflexive() {
-        return true;
+        return this.estEgale(this.avecBoucles()); // Moyen ils aiment pas ça
     }
 
     //______________________________________________
@@ -588,7 +596,7 @@ public class RelationBinaire {
      * résultat : vrai ssi this est antiréflexive
      */
     public boolean estAntireflexive() {
-        return true;
+        return this.estEgale(this.sansBoucles());
     }
 
     //______________________________________________
@@ -599,6 +607,12 @@ public class RelationBinaire {
      * résultat : vrai ssi this est symétrique
      */
     public boolean estSymetrique() {
+        for (int i = 0; i < matAdj.length; i++) {
+            EE iSucc = this.succ(i);
+            for (int j = 0; j < matAdj.length; j++) {
+                if (iSucc.contient(j) && !this.succ(j).contient(i)) return false;
+            }
+        }
         return true;
     }
 
@@ -610,6 +624,12 @@ public class RelationBinaire {
      * résultat : vrai ssi this est antisymétrique
      */
     public boolean estAntisymetrique() {
+        for (int i = 0; i < matAdj.length; i++) {
+            EE iSucc = this.succ(i);
+            for (int j = 0; j < matAdj.length; j++) {
+                if ( i != j && iSucc.contient(j) && this.succ(j).contient(i)) return false;
+            }
+        }
         return true;
     }
 
@@ -621,6 +641,19 @@ public class RelationBinaire {
      * résultat : vrai ssi this est transitive
      */
     public boolean estTransitive() {
+        RelationBinaire r = new RelationBinaire(this);
+        for (int i = 0; i < r.tabSucc.length; i++) {
+            EE iSuc = r.succ(i);
+            for (int j = 0; j < r.tabSucc.length; j++) {
+                EE jSuc = r.succ(j);
+                if (iSuc.contient(j)) {
+                    for (int k = 0; k < r.tabSucc.length; k++) {
+                        if (jSuc.contient(k) && !iSuc.contient(k)) return false; // si il existe iRj et jRk et pas iRk alors pas transitive
+                    }
+                }
+            }
+        }
+
         return true;
     }
 
@@ -632,11 +665,16 @@ public class RelationBinaire {
      * résultat : vrai ssi this est une relation d'ordre
      */
     public boolean estRelOrdre() {
-        return true;
+        return (this.estReflexive() && this.estAntisymetrique() && this.estTransitive());
     }
 
     //______________________________________________
 
+    /*
+    0 -> 1, 2
+    1 -> 2
+    2 ->
+     */
 
     /**
      * pré-requis : aucun
@@ -665,7 +703,17 @@ public class RelationBinaire {
      * Hasse, fermeture transitive de Hasse et fermeture transitive de Hasse avec boucles (sous 2 formes aussi)
      */
     public void afficheDivers() {
-
+        System.out.println(this);
+        if (estReflexive()) System.out.println("Réflexive");
+        if (estAntireflexive()) System.out.println("Antiréflexive");
+        if (estSymetrique()) System.out.println("Symétrique");
+        if (estAntisymetrique()) System.out.println("Antisymétrique");
+        if (estTransitive()) System.out.println("Transitive");
+        if (estRelOrdre()) System.out.println("Relation d'ordre");
+        System.out.println("Diagramme de Hasse :");
+        System.out.println(this.hasse());
+        System.out.println("Fermeture transitive de Hasse :");
+        System.out.println(this.hasse().ferTrans());
     }
 
     //______________________________________________
