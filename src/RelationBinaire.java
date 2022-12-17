@@ -101,7 +101,7 @@ public class RelationBinaire {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (mat[i][j] == 1){
+                if (mat[i][j] == 1) {
                     m++;
                 }
             }
@@ -482,7 +482,7 @@ public class RelationBinaire {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (!tabSucc[i].contient(j)){
+                if (!tabSucc[i].contient(j)) {
                     tabSuccComplementaire[i].ajoutElt(j);
                 }
             }
@@ -532,7 +532,7 @@ public class RelationBinaire {
      */
     public boolean estEgale(RelationBinaire r) {
         for (int i = 0; i < n; i++) {
-            if (!tabSucc[i].estEgal(r.tabSucc[i])){
+            if (!tabSucc[i].estEgal(r.tabSucc[i])) {
                 return false;
             }
         }
@@ -627,7 +627,7 @@ public class RelationBinaire {
         for (int i = 0; i < matAdj.length; i++) {
             EE iSucc = this.succ(i);
             for (int j = 0; j < matAdj.length; j++) {
-                if ( i != j && iSucc.contient(j) && this.succ(j).contient(i)) return false;
+                if (i != j && iSucc.contient(j) && this.succ(j).contient(i)) return false;
             }
         }
         return true;
@@ -648,7 +648,8 @@ public class RelationBinaire {
                 EE jSuc = r.succ(j);
                 if (iSuc.contient(j)) {
                     for (int k = 0; k < r.tabSucc.length; k++) {
-                        if (jSuc.contient(k) && !iSuc.contient(k)) return false; // si il existe iRj et jRk et pas iRk alors pas transitive
+                        if (jSuc.contient(k) && !iSuc.contient(k))
+                            return false; // si il existe iRj et jRk et pas iRk alors pas transitive
                     }
                 }
             }
@@ -681,7 +682,19 @@ public class RelationBinaire {
      * résultat : la relation binaire assiciée au diagramme de Hasse de this
      */
     public RelationBinaire hasse() {
-        return this;
+        RelationBinaire r = new RelationBinaire(this).sansBoucles();
+        for (int i = 0; i < r.tabSucc.length; i++) {
+            EE iSuc = r.succ(i);
+            for (int j = 0; j < r.tabSucc.length; j++) {
+                EE jSuc = r.succ(j);
+                if (iSuc.contient(j)) {
+                    for (int k = 0; k < r.tabSucc.length; k++) {
+                        if (jSuc.contient(k) && iSuc.contient(k)) r.tabSucc[i].retraitElt(k);
+                    }
+                }
+            }
+        }
+        return new RelationBinaire(r.tabSucc);
     }
 
     //______________________________________________
@@ -691,7 +704,21 @@ public class RelationBinaire {
      * résultat : la fermeture transitive de this
      */
     public RelationBinaire ferTrans() {
-        return this;
+        RelationBinaire r = new RelationBinaire(this);
+        while(!r.estTransitive()) {
+            for (int i = 0; i < r.tabSucc.length; i++) {
+                EE iSuc = r.succ(i);
+                for (int j = 0; j < r.tabSucc.length; j++) {
+                    EE jSuc = r.succ(j);
+                    if (iSuc.contient(j)) {
+                        for (int k = 0; k < r.tabSucc.length; k++) {
+                            if (jSuc.contient(k) && !iSuc.contient(k)) r.tabSucc[i].ajoutElt(k);
+                        }
+                    }
+                }
+            }
+        }
+        return new RelationBinaire(r.tabSucc);
     }
 
     //______________________________________________
@@ -713,7 +740,7 @@ public class RelationBinaire {
         System.out.println("Diagramme de Hasse :");
         System.out.println(this.hasse());
         System.out.println("Fermeture transitive de Hasse :");
-        System.out.println(this.hasse().ferTrans());
+        System.out.println(this.ferTrans());
     }
 
     //______________________________________________

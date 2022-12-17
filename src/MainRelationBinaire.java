@@ -168,12 +168,14 @@ public class MainRelationBinaire {
 //        System.out.println("EstAntiSymetrique");
 //        System.out.println(relationTest1.estAsymetrique());
 
-        new RelationBinaire(new int[][] {{1, 1, 1, 1, 1},
-                {0, 1, 1, 1, 1},
-                {0, 0, 1, 0, 0},
-                {0, 0, 0, 1, 0},
-                {0, 0, 0, 0, 1},
-        }).afficheDivers();
+//        new RelationBinaire(new int[][] {{1, 1, 1, 1, 1},
+//                {0, 1, 1, 1, 1},
+//                {0, 0, 1, 1, 0},
+//                {0, 0, 0, 1, 0},
+//                {0, 0, 0, 0, 1},
+//        }).afficheDivers();
+
+        new RelationBinaire(new int[][] {{0,1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}, {0, 0, 1, 0}}).afficheDivers();
     }
 
 
