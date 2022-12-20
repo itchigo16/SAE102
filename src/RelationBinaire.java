@@ -561,10 +561,48 @@ public class RelationBinaire {
         EE pred = new EE(index);
 
         for (int i = 0; i < tabSucc.length; i++) {
-            if (appartient(i, x)) pred.ajoutElt(i);
+            if (appartient(i, x)) {
+                pred.ajoutElt(i);
+            }
+        }
+        return pred;
+    }
+
+    //______________________________________________
+
+
+    /**
+     * pré-requis : 0 <= x < this.n
+     * résultat : l'ensemble des descendants de x dans this
+     */
+    public EE descendants(int x) {
+        EE descendants = new EE(m);
+
+        for (int i = 0; i < tabSucc.length; i++) {
+            if (appartient(x, i)) {
+                descendants.ajoutElt(i);
+
+                EE succI;
+                EE parcouru = new EE(m);
+
+                do{
+                    succI = succ(i);
+                    parcouru.ajoutElt(i);
+
+                    for (int j = 0; j < tabSucc.length; j++) {
+                        if (succI.contient(j)) {
+                            descendants.ajoutElt(j);
+                        }
+                        if (descendants.contient(j) && !parcouru.contient(j)){
+                            i = j;
+                        }
+                    }
+                } while (!succI.estVide());
+            }
+
         }
 
-        return pred;
+        return descendants;
     }
 
     //______________________________________________
@@ -646,11 +684,17 @@ public class RelationBinaire {
         return true;
     }
 
-    public boolean[][] diagonale (boolean[][] mat){
+    public boolean[][] diagonale(boolean[][] mat) {
         boolean[][] diagonale = new boolean[mat.length][mat.length];
 
         for (int i = 0; i < mat.length; i++) {
-            diagonale[i][i] = mat[i][i];
+            for (int j = 0; j < mat.length; j++) {
+                if (i != j) {
+                    diagonale[i][j] = false;
+                } else {
+                    diagonale[i][j] = mat[i][j];
+                }
+            }
         }
 
         return diagonale;

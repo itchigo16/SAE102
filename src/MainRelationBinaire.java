@@ -41,13 +41,6 @@ public class MainRelationBinaire {
                         {true, false, true}
                 });
 
-        boolean[][] tabBoolTest5 =
-                (new boolean[][]{
-                        {true, true, true},
-                        {false, false, false},
-                        {false, true, true}
-                });
-
         System.out.println("RELATION TEST 1");
         RelationBinaire relationTest1 = new RelationBinaire(tabBoolTest1);
         relationTest1.toString();
@@ -186,6 +179,23 @@ public class MainRelationBinaire {
                 {false, false, false, true},
                 {false, false, true, false}
         }).afficheDivers();
+
+
+        boolean[][] tabBoolTest5 =
+                (new boolean[][]{
+                        {false, true, false, false, false},
+                        {false, false, false, false, true},
+                        {false, false, false, true, false},
+                        {false, false, false, false, false},
+                        {false, false, true, false, false},
+                });
+
+        System.out.println("RELATION TEST 5");
+        RelationBinaire relationTest5 = new RelationBinaire(tabBoolTest5);
+        relationTest5.toString();
+
+        System.out.println(relationTest5.descendants(0));
+
     }
 
 
