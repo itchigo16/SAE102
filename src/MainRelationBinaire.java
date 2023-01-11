@@ -196,6 +196,19 @@ public class MainRelationBinaire {
 
         System.out.println(relationTest5.descendants(0));
 
+
+        System.out.println("DIFFERENCE");
+        RelationBinaire relationDifference = relationTest1.difference(relationTest2);
+        relationDifference.toString();
+
+        System.out.println("estInclus");
+        System.out.println(relationTest2.estIncluse(relationTest1));
+        System.out.println(relationTest2.estIncluseBis(relationTest1));
+
+        System.out.println("estEgale");
+        System.out.println(relationTest2.estEgale(relationTest1));
+        System.out.println(relationTest2.estEgaleBis(relationTest1));
+
     }
 
 

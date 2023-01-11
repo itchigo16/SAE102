@@ -6,17 +6,16 @@ public class RelationBinaire {
 
     // attributs
 
-    private int n;           // n > 0, E = {0,1,2, ..., n-1}
-    private boolean[][] matAdj;  // matrice d'adjacence de R
-    private int m;           // cardinal de R
-    private EE[] tabSucc;    // tableau des ensembles de successeurs
-
+    private int n; // n > 0, E = {0,1,2, ..., n-1}
+    private boolean[][] matAdj; // matrice d'adjacence de R
+    private int m; // cardinal de R
+    private EE[] tabSucc; // tableau des ensembles de successeurs
 
     // constructeurs
 
     /**
-     * pré-requis : nb > 0
-     * action : construit la relation binaire vide dans l'ensemble {0,1,2, ..., nb-1}
+     * pré-requis : nb > 0 action : construit la relation binaire vide dans
+     * l'ensemble {0,1,2, ..., nb-1}
      */
     public RelationBinaire(int nb) {
         n = nb;
@@ -25,15 +24,14 @@ public class RelationBinaire {
         matAdj = new boolean[nb][nb];
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : nb > 0 et 0 <= p <= 1
-     * action : construit une relation binaire aléatoire dans l'ensemble {0,1,2, ..., nb-1}
-     * à laquelle chaque couple a la probabilité p d'appartenir.
-     * En particulier, construit la relation vide si p = 0 et la relation pleine si p = 1.
-     * Indication : Math.random() retourne un réel de type double aléatoire de l'intervalle [0,1[
+     * pré-requis : nb > 0 et 0 <= p <= 1 action : construit une relation binaire
+     * aléatoire dans l'ensemble {0,1,2, ..., nb-1} à laquelle chaque couple a la
+     * probabilité p d'appartenir. En particulier, construit la relation vide si p =
+     * 0 et la relation pleine si p = 1. Indication : Math.random() retourne un réel
+     * de type double aléatoire de l'intervalle [0,1[
      */
     public RelationBinaire(int nb, double p) {
         n = nb;
@@ -52,7 +50,8 @@ public class RelationBinaire {
 
         for (int i = 0; i < nb; i++) {
             for (int j = 0; j < nb; j++) {
-                if (tabSucc[i].contient(j)) matAdj[i][j] = true;
+                if (tabSucc[i].contient(j))
+                    matAdj[i][j] = true;
             }
         }
 
@@ -61,35 +60,32 @@ public class RelationBinaire {
         }
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : nb > 0 et 1 <= choix <= 3
-     * action : construit la relation binaire dans l'ensemble {0,1,2, ..., nb-1}
-     * '=' si egal a la valeur vrai et '<=' sinon
+     * pré-requis : nb > 0 action : construit la relation binaire dans l'ensemble
+     * {0,1,2, ..., nb-1} '=' si egal a la valeur vrai et '<=' sinon
      */
     public RelationBinaire(int nb, boolean egal) {
         n = nb;
         m = 0;
         tabSucc = new EE[nb];
+        matAdj = new boolean[nb][nb];
 
-        /*
-        if (egal) {
-            '=' ????
+        if (egal) { // crée que la diagonale
+            for (int i = 0; i < nb; i++) {
+                matAdj[i][i] = true;
+            }
         } else {
-            '<=' ????
+
         }
-        */
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : mat est une matrice carrée de dimension > 0
-     * action : construit une relation binaire dont la matrice d'adjacence
-     * est une copie de mat
+     * pré-requis : mat est une matrice carrée de dimension > 0 action : construit
+     * une relation binaire dont la matrice d'adjacence est une copie de mat
      */
     public RelationBinaire(boolean[][] mat) {
         n = mat.length;
@@ -111,14 +107,12 @@ public class RelationBinaire {
         }
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : tab.length > 0 et pour tout i, les éléments de tab[i]
-     * sont compris entre 0 et tab.length-1
-     * action : construit une relation binaire dont le tableau des ensembles de successeurs
-     * est une copie de tab
+     * pré-requis : tab.length > 0 et pour tout i, les éléments de tab[i] sont
+     * compris entre 0 et tab.length-1 action : construit une relation binaire dont
+     * le tableau des ensembles de successeurs est une copie de tab
      */
     public RelationBinaire(EE[] tab) {
         n = tab.length;
@@ -136,17 +130,16 @@ public class RelationBinaire {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (tabSucc[i].contient(j)) matAdj[i][j] = true;
+                if (tabSucc[i].contient(j))
+                    matAdj[i][j] = true;
             }
         }
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * action : construit une copie de r
+     * pré-requis : aucun action : construit une copie de r
      */
     public RelationBinaire(RelationBinaire r) {
         this.n = r.n;
@@ -165,18 +158,15 @@ public class RelationBinaire {
         }
     }
 
-
-    //______________________________________________
-
+    // ______________________________________________
 
     // méthodes
 
-
     /**
-     * pré-requis : aucun
-     * résultat : une chaîne de caractères permettant d'afficher this par sa matrice d'adjacence
-     * contenant des '0' et des '1' (plus lisibles que des 'V' et des 'F') et sa définition
-     * en extension (ensemble de couples {(..,..),(..,..), ...})
+     * pré-requis : aucun résultat : une chaîne de caractères permettant d'afficher
+     * this par sa matrice d'adjacence contenant des '0' et des '1' (plus lisibles
+     * que des 'V' et des 'F') et sa définition en extension (ensemble de couples
+     * {(..,..),(..,..), ...})
      */
     @Override
     public String toString() {
@@ -201,19 +191,18 @@ public class RelationBinaire {
         return " ";
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     // A) Logique et calcul matriciel
-    //-------------------------------
-
+    // -------------------------------
 
     /**
-     * pré-requis : m1 et m2 sont des matrices carrées de même dimension et 1 <= numConnecteur <= 5
-     * résultat : la matrice obtenue en appliquant terme à terme le  connecteur de numéro numConnecteur
-     * sur m1 si numConnecteur = 3 (dans ce cas le paramètre m2 n'est pas utilisé),
-     * et sur m1 et m2 dans cet ordre sinon, sachant que les connecteurs "ou","et","non",
-     * "implique"et "equivalent" sont numérotés de 1 à 5 dans cet ordre
+     * pré-requis : m1 et m2 sont des matrices carrées de même dimension et 1 <=
+     * numConnecteur <= 5 résultat : la matrice obtenue en appliquant terme à terme
+     * le connecteur de numéro numConnecteur sur m1 si numConnecteur = 3 (dans ce
+     * cas le paramètre m2 n'est pas utilisé), et sur m1 et m2 dans cet ordre sinon,
+     * sachant que les connecteurs "ou","et","non", "implique"et "equivalent" sont
+     * numérotés de 1 à 5 dans cet ordre
      */
 
     public static boolean[][] opBool(boolean[][] m1, boolean[][] m2, int numConnecteur) {
@@ -260,12 +249,11 @@ public class RelationBinaire {
         return m3;
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : m1 et m2 sont des matrices carrées de même dimension
-     * résultat : le produit matriciel de m1 et m2
+     * pré-requis : m1 et m2 sont des matrices carrées de même dimension résultat :
+     * le produit matriciel de m1 et m2
      */
     public static boolean[][] produit(boolean[][] m1, boolean[][] m2) {
         int length = m1.length;
@@ -274,7 +262,8 @@ public class RelationBinaire {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {
                 for (int k = 0; k < length; k++) {
-                    // soit laisse TRUE soit verifie que a l'indice de m1 et a l'indice de m2 il y a TRUE
+                    // soit laisse TRUE soit verifie que a l'indice de m1 et a l'indice de m2 il y a
+                    // TRUE
                     mat[i][j] = mat[i][j] || (m1[i][k] && m2[k][j]);
                 }
             }
@@ -282,12 +271,10 @@ public class RelationBinaire {
         return mat;
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : m est une matrice carrée
-     * résultat : la matrice transposée de m
+     * pré-requis : m est une matrice carrée résultat : la matrice transposée de m
      */
     public static boolean[][] transposee(boolean[][] m) {
         int length = m.length;
@@ -303,97 +290,90 @@ public class RelationBinaire {
         return matriceTransposee;
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     // B) Théorie des ensembles
-    //--------------------------
-
+    // --------------------------
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est vide
+     * pré-requis : aucun résultat : vrai ssi this est vide
      */
     public boolean estVide() {
         for (int i = 0; i < n; i++) {
-            if (!tabSucc[i].estVide()) return false;
+            if (!tabSucc[i].estVide())
+                return false;
         }
 
         return true;
     }
 
-    //______________________________________________
+    public boolean estVideBis() {
+        return m == 0;
+    }
 
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est pleine (contient tous les couples d'éléments de E)
+     * pré-requis : aucun résultat : vrai ssi this est pleine (contient tous les
+     * couples d'éléments de E)
      */
     public boolean estPleine() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (!tabSucc[i].contient(j)) return false;
+                if (!tabSucc[i].contient(j))
+                    return false;
             }
         }
 
         return true;
-
-        /*
-        for (int i = 0; i < matAdj.length; i++) {
-            for (int j = 0; j < matAdj[i].length; j++) {
-                if (matAdj[i][j] == false){
-                    return false;
-                }
-            }
-        }
-         */
     }
 
-    //______________________________________________
+    public boolean estPleineBis() {
+        return m == n*n;
+    }
+
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi (x,y) appartient à this
+     * pré-requis : aucun résultat : vrai ssi (x,y) appartient à this
      */
     public boolean appartient(int x, int y) {
         return tabSucc[x].contient(y);
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : 0 <= x < this.n et 0 <= y < this.n
-     * résultat : ajoute (x,y) à this s'il n'y est pas déjà
+     * pré-requis : 0 <= x < this.n et 0 <= y < this.n résultat : ajoute (x,y) à
+     * this s'il n'y est pas déjà
      */
     public void ajouteCouple(int x, int y) {
         if (!matAdj[x][y]) {
             matAdj[x][y] = true;
             tabSucc[x].ajoutElt(y);
+            m++;
         }
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : 0 <= x < this.n et 0 <= y < this.n
-     * résultat : enlève (x,y) de this s'il y est
+     * pré-requis : 0 <= x < this.n et 0 <= y < this.n résultat : enlève (x,y) de
+     * this s'il y est
      */
     public void enleveCouple(int x, int y) {
         if (matAdj[x][y]) {
             matAdj[x][y] = false;
             tabSucc[x].retraitElt(y);
+            m--;
         }
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : une nouvelle relation binaire obtenue à partir de this en ajoutant
-     * les couples de la forme (x, x) qui n'y sont pas déjà
+     * pré-requis : aucun résultat : une nouvelle relation binaire obtenue à partir
+     * de this en ajoutant les couples de la forme (x, x) qui n'y sont pas déjà
      */
     public RelationBinaire avecBoucles() {
         RelationBinaire boucles = new RelationBinaire(this);
@@ -405,14 +385,17 @@ public class RelationBinaire {
         return boucles;
     }
 
+    public RelationBinaire avecBouclesBis() {
+        RelationBinaire diagonale = new RelationBinaire(n, true);
 
-    //______________________________________________
+        return new RelationBinaire(opBool(matAdj, diagonale.matAdj, 1));
+    }
 
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : une nouvelle relation binaire obtenue à partir de this en enlèvant
-     * les couples de la forme (x, x) qui y sont
+     * pré-requis : aucun résultat : une nouvelle relation binaire obtenue à partir
+     * de this en enlèvant les couples de la forme (x, x) qui y sont
      */
     public RelationBinaire sansBoucles() {
         RelationBinaire boucles = new RelationBinaire(this);
@@ -424,12 +407,17 @@ public class RelationBinaire {
         return boucles;
     }
 
-    //______________________________________________
+    public RelationBinaire sansBouclesBis() {
+        RelationBinaire diagonale = new RelationBinaire(n, true);
+        boolean[][] matDiagonaleInverse = opBool(diagonale.matAdj, matAdj, 1);
 
+        return new RelationBinaire(opBool(matAdj, matDiagonaleInverse, 2));
+    }
+
+    // ______________________________________________
 
     /**
-     * pré-requis : this.n = r.n
-     * résultat : l'union de this et r
+     * pré-requis : this.n = r.n résultat : l'union de this et r
      */
     public RelationBinaire union(RelationBinaire r) {
         EE[] tabSuccUnion = new EE[n];
@@ -441,12 +429,14 @@ public class RelationBinaire {
         return new RelationBinaire(tabSuccUnion);
     }
 
-    //______________________________________________
+    public RelationBinaire unionBis(RelationBinaire r) {
+        return new RelationBinaire(opBool(matAdj, r.matAdj, 1));
+    }
 
+    // ______________________________________________
 
     /**
-     * pré-requis : this.n = r.n
-     * résultat : l'intersection de this et r
+     * pré-requis : this.n = r.n résultat : l'intersection de this et r
      */
     public RelationBinaire intersection(RelationBinaire r) {
         EE[] tabSuccInter = new EE[n];
@@ -458,12 +448,14 @@ public class RelationBinaire {
         return new RelationBinaire(tabSuccInter);
     }
 
-    //______________________________________________
+    public RelationBinaire intersectionBis(RelationBinaire r) {
+        return new RelationBinaire(opBool(matAdj, r.matAdj, 2));
+    }
 
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : la relation complémentaire de this
+     * pré-requis : aucun résultat : la relation complémentaire de this
      */
     public RelationBinaire complementaire() {
         EE[] tabSuccComplementaire = new EE[n];
@@ -482,12 +474,14 @@ public class RelationBinaire {
         return new RelationBinaire(tabSuccComplementaire);
     }
 
-    //______________________________________________
+    public RelationBinaire complementaireBis() {
+        return new RelationBinaire(opBool(matAdj, matAdj, 3));
+    }
 
+    // ______________________________________________
 
     /**
-     * pré-requis : this.n = r.n
-     * résultat : la différence de this et r
+     * pré-requis : this.n = r.n résultat : la différence de this et r
      */
     public RelationBinaire difference(RelationBinaire r) {
         EE[] tabSuccDifference = new EE[n];
@@ -499,27 +493,35 @@ public class RelationBinaire {
         return new RelationBinaire(tabSuccDifference);
     }
 
-    //______________________________________________
+    public RelationBinaire differenceBis(RelationBinaire r) {
+        boolean[][] inverse = opBool(r.matAdj, r.matAdj, 3);
 
+        return new RelationBinaire(opBool(matAdj, inverse, 1));
+    }
+
+    // ______________________________________________
 
     /**
-     * pré-requis : this.n = r.n
-     * résultat : vrai ssi this est incluse dans r
+     * pré-requis : this.n = r.n résultat : vrai ssi this est incluse dans r
      */
     public boolean estIncluse(RelationBinaire r) {
         for (int i = 0; i < n; i++) {
-            if (!tabSucc[i].estInclus(r.tabSucc[i])) return false;
+            if (!tabSucc[i].estInclus(r.tabSucc[i]))
+                return false;
         }
 
         return true;
     }
 
-    //______________________________________________
+    public boolean estIncluseBis(RelationBinaire r) {
 
+        return difference(r).estVide();
+    }
+
+    // ______________________________________________
 
     /**
-     * pré-requis : this.n = r.n
-     * résultat : vrai ssi this est égale à r
+     * pré-requis : this.n = r.n résultat : vrai ssi this est égale à r
      */
     public boolean estEgale(RelationBinaire r) {
         for (int i = 0; i < n; i++) {
@@ -531,32 +533,39 @@ public class RelationBinaire {
         return true;
     }
 
-    //______________________________________________
+    public boolean estEgaleBis(RelationBinaire r) {
+        boolean[][] inverse = opBool(r.matAdj, r.matAdj, 3);
+        boolean[][] et = opBool(matAdj, r.matAdj, 2);
+        RelationBinaire r1 = new RelationBinaire(opBool(inverse, et, 2));
 
+        return r1.estVide();
+    }
+
+    // ______________________________________________
 
     // C) Théorie des graphes orientés
-    //---------------------------------
+    // ---------------------------------
 
     /**
-     * pré-requis : 0 <= x < this.n
-     * résultat : l'ensemble des successeurs de x dans this, "indépendant"
-     * (c'est-à-dire dans une autre zône mémoire) de l'attribut this.tabSucc
+     * pré-requis : 0 <= x < this.n résultat : l'ensemble des successeurs de x dans
+     * this, "indépendant" (c'est-à-dire dans une autre zône mémoire) de l'attribut
+     * this.tabSucc
      */
     public EE succ(int x) {
         return new EE(tabSucc[x]);
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : 0 <= x < this.n
-     * résultat : l'ensemble des prédécesseurs de x dans this
+     * pré-requis : 0 <= x < this.n résultat : l'ensemble des prédécesseurs de x
+     * dans this
      */
     public EE pred(int x) {
         int index = 0;
         for (EE ligne : tabSucc) {
-            if (ligne.contient(x)) index++;
+            if (ligne.contient(x))
+                index++;
         }
         EE pred = new EE(index);
 
@@ -568,24 +577,27 @@ public class RelationBinaire {
         return pred;
     }
 
-    //______________________________________________
+    public EE predBis(int x) {
+        boolean [][] transposee = this.transposee(matAdj);
+        RelationBinaire r = new RelationBinaire(transposee);
 
+        return r.succ(x);
+    }
+
+    // ______________________________________________
 
     /**
-     * pré-requis : 0 <= x < this.n
-     * résultat : l'ensemble des descendants de x dans this
+     * pré-requis : 0 <= x < this.n résultat : l'ensemble des descendants de x dans
+     * this
      */
     public EE descendants(int x) {
         EE descendants = new EE(m);
-
         for (int i = 0; i < tabSucc.length; i++) {
             if (appartient(x, i)) {
                 descendants.ajoutElt(i);
-
                 EE succI;
                 EE parcouru = new EE(m);
-
-                do{
+                do {
                     succI = succ(i);
                     parcouru.ajoutElt(i);
 
@@ -593,31 +605,28 @@ public class RelationBinaire {
                         if (succI.contient(j)) {
                             descendants.ajoutElt(j);
                         }
-                        if (descendants.contient(j) && !parcouru.contient(j)){
+                        if (descendants.contient(j) && !parcouru.contient(j)) {
                             i = j;
                         }
                     }
                 } while (!succI.estVide());
             }
-
         }
-
         return descendants;
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     // D) Relation binaire
-    //---------------------
+    // ---------------------
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est réflexive
+     * pré-requis : aucun résultat : vrai ssi this est réflexive
      */
     public boolean estReflexive() {
         for (int i = 0; i < tabSucc.length; i++) {
-            if (!tabSucc[i].contient(i)) return false;
+            if (!tabSucc[i].contient(i))
+                return false;
         }
 
         return true;
@@ -627,16 +636,15 @@ public class RelationBinaire {
         return this.estEgale(this.avecBoucles());
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est antiréflexive
+     * pré-requis : aucun résultat : vrai ssi this est antiréflexive
      */
     public boolean estAntireflexive() {
         for (int i = 0; i < tabSucc.length; i++) {
-            if (tabSucc[i].contient(i)) return false;
+            if (tabSucc[i].contient(i))
+                return false;
         }
 
         return true;
@@ -646,73 +654,53 @@ public class RelationBinaire {
         return this.estEgale(this.sansBoucles());
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est symétrique
+     * pré-requis : aucun résultat : vrai ssi this est symétrique
      */
     public boolean estSymetrique() {
         for (int i = 0; i < matAdj.length; i++) {
             EE iSucc = this.succ(i);
             for (int j = 0; j < matAdj.length; j++) {
-                if (iSucc.contient(j) && !this.succ(j).contient(i)) return false;
+                if (iSucc.contient(j) && !this.succ(j).contient(i))
+                    return false;
             }
         }
         return true;
     }
 
     public boolean estSymetriqueBis() {
-        return matAdj == transposee(matAdj);
+        return estEgale(new RelationBinaire(transposee(matAdj)));
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est antisymétrique
+     * pré-requis : aucun résultat : vrai ssi this est antisymétrique
      */
     public boolean estAntisymetrique() {
         for (int i = 0; i < matAdj.length; i++) {
             EE iSucc = this.succ(i);
             for (int j = 0; j < matAdj.length; j++) {
-                if (i != j && iSucc.contient(j) && this.succ(j).contient(i)) return false;
+                if (i != j && iSucc.contient(j) && this.succ(j).contient(i))
+                    return false;
             }
         }
         return true;
-    }
-
-    public boolean[][] diagonale(boolean[][] mat) {
-        boolean[][] diagonale = new boolean[mat.length][mat.length];
-
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat.length; j++) {
-                if (i != j) {
-                    diagonale[i][j] = false;
-                } else {
-                    diagonale[i][j] = mat[i][j];
-                }
-            }
-        }
-
-        return diagonale;
     }
 
     public boolean estAntisymetriqueBis() {
         RelationBinaire relationTransposee = new RelationBinaire(transposee(matAdj));
         RelationBinaire relationInter = intersection(relationTransposee);
 
-        return relationInter.estIncluse(new RelationBinaire(this.diagonale(matAdj)));
+        return relationInter.estIncluse(new RelationBinaire(n, true));
     }
 
-    //______________________________________________
-
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est transitive
+     * pré-requis : aucun résultat : vrai ssi this est transitive
      */
     public boolean estTransitive() {
         RelationBinaire r = new RelationBinaire(this);
@@ -732,28 +720,30 @@ public class RelationBinaire {
         return true;
     }
 
-    //______________________________________________
+    public boolean estTransitiveBis() {
+        RelationBinaire r = new RelationBinaire(produit(matAdj, matAdj));
 
+        return r.estIncluse(this);
+    }
+
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : vrai ssi this est une relation d'ordre
+     * pré-requis : aucun résultat : vrai ssi this est une relation d'ordre
      */
     public boolean estRelOrdre() {
         return (this.estReflexive() && this.estAntisymetrique() && this.estTransitive());
     }
 
-    //______________________________________________
+    // ______________________________________________
 
     /*
-    0 -> 1, 2
-    1 -> 2
-    2 ->
+     * 0 -> 1, 2 1 -> 2 2 ->
      */
 
     /**
-     * pré-requis : aucun
-     * résultat : la relation binaire associée au diagramme de Hasse de this
+     * pré-requis : aucun résultat : la relation binaire associée au diagramme de
+     * Hasse de this
      */
     public RelationBinaire hasse() {
         RelationBinaire r = new RelationBinaire(this).sansBoucles();
@@ -763,7 +753,8 @@ public class RelationBinaire {
                 EE jSuc = r.succ(j);
                 if (iSuc.contient(j)) {
                     for (int k = 0; k < r.tabSucc.length; k++) {
-                        if (jSuc.contient(k) && iSuc.contient(k)) r.tabSucc[i].retraitElt(k);
+                        if (jSuc.contient(k) && iSuc.contient(k))
+                            r.tabSucc[i].retraitElt(k);
                     }
                 }
             }
@@ -771,11 +762,12 @@ public class RelationBinaire {
         return new RelationBinaire(r.tabSucc);
     }
 
-    //______________________________________________
+
+
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * résultat : la fermeture transitive de this
+     * pré-requis : aucun résultat : la fermeture transitive de this
      */
     public RelationBinaire ferTrans() {
         RelationBinaire r = new RelationBinaire(this);
@@ -786,7 +778,8 @@ public class RelationBinaire {
                     EE jSuc = r.succ(j);
                     if (iSuc.contient(j)) {
                         for (int k = 0; k < r.tabSucc.length; k++) {
-                            if (jSuc.contient(k) && !iSuc.contient(k)) r.tabSucc[i].ajoutElt(k);
+                            if (jSuc.contient(k) && !iSuc.contient(k))
+                                r.tabSucc[i].ajoutElt(k);
                         }
                     }
                 }
@@ -795,29 +788,56 @@ public class RelationBinaire {
         return new RelationBinaire(r.tabSucc);
     }
 
-    //______________________________________________
+    // ______________________________________________
 
     /**
-     * pré-requis : aucun
-     * action : affiche this sous 2 formes (matrice et ensemble de couples), puis affiche ses propriétés
-     * (réflexive, ..., relation d'ordre) et les relations binaires suivantes obtenues à partir de this :
-     * Hasse, fermeture transitive de Hasse et fermeture transitive de Hasse avec boucles (sous 2 formes aussi)
+     * pré-requis : aucun action : affiche this sous 2 formes (matrice et ensemble
+     * de couples), puis affiche ses propriétés (réflexive, ..., relation d'ordre)
+     * et les relations binaires suivantes obtenues à partir de this : Hasse,
+     * fermeture transitive de Hasse et fermeture transitive de Hasse avec boucles
+     * (sous 2 formes aussi)
      */
     public void afficheDivers() {
         System.out.println(this);
-        if (estReflexive()) System.out.println("Réflexive");
-        if (estAntireflexive()) System.out.println("Antiréflexive");
-        if (estSymetriqueBis()) System.out.println("Symétrique");
-        if (estAntisymetriqueBis()) System.out.println("Antisymétrique");
-        if (estTransitive()) System.out.println("Transitive");
-        if (estRelOrdre()) System.out.println("Relation d'ordre");
+        if (estReflexive())
+            System.out.println("Réflexive");
+        if (estAntireflexive())
+            System.out.println("Antiréflexive");
+        if (estSymetrique())
+            System.out.println("Symétrique");
+        if (estAntisymetrique())
+            System.out.println("Antisymétrique");
+        if (estTransitive())
+            System.out.println("Transitive");
+        if (estRelOrdre())
+            System.out.println("Relation d'ordre");
         System.out.println("Diagramme de Hasse :");
         System.out.println(this.hasse());
         System.out.println("Fermeture transitive de Hasse :");
         System.out.println(this.ferTrans());
     }
 
-    //______________________________________________
+    public void afficheDiversBis() {
+        System.out.println(this);
+        if (estReflexiveBis())
+            System.out.println("Réflexive");
+        if (estAntireflexiveBis())
+            System.out.println("Antiréflexive");
+        if (estSymetriqueBis())
+            System.out.println("Symétrique");
+        if (estAntisymetriqueBis())
+            System.out.println("Antisymétrique");
+        if (estTransitiveBis())
+            System.out.println("Transitive");
+        if (estRelOrdre())
+            System.out.println("Relation d'ordre");
+        System.out.println("Diagramme de Hasse :");
+        System.out.println(this.hasse());
+        System.out.println("Fermeture transitive de Hasse :");
+        System.out.println(this.ferTrans());
+    }
+
+    // ______________________________________________
 
     public static void main(String[] args) {
 
@@ -826,8 +846,7 @@ public class RelationBinaire {
         do {
             Ut.afficher("\nDonner le cardinal de E (>0) : ");
             nb = Ut.saisirEntier();
-        }
-        while (nb <= 0);
+        } while (nb <= 0);
     }
 
 } // fin RelationBinaire
